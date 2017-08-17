@@ -12,6 +12,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import com.example.KafkaMessageDriven.model.Campaign;
 
 @EnableKafka
 @Configuration
@@ -21,19 +24,32 @@ public class ConsumerConfiguration {
 	private String bootstrapServers;
 	
 	@Bean
-	public ConsumerFactory<String, String> consumerFactory(){
+	public Map<String, Object> consumerConfig(){
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, campaignDeserializer.class);
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG,"foo");
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, campaignDeserializer.class);
-		return new DefaultKafkaConsumerFactory<>(props);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+		return props;
+	}
+
+	@Bean
+	public ConsumerFactory<String, Campaign> consumerFactory(){
+		return new DefaultKafkaConsumerFactory<>(consumerConfig(),
+				new StringDeserializer(), 
+				new JsonDeserializer<>(Campaign.class) );
 	}
 	
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(){
-		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+	public ConcurrentKafkaListenerContainerFactory<String, Campaign> kafkaListenerContainerFactory(){
+		ConcurrentKafkaListenerContainerFactory<String, Campaign> factory = 
+				new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		return factory;
+	}
+	
+	@Bean
+	public Receiver receiver(){
+		return new Receiver();
 	}
 }

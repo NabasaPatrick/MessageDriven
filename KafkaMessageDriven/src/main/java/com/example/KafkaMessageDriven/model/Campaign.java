@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class Campaign {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator="seq")
 	private Integer id;
 	private String name;
 	private String status;
@@ -38,6 +38,9 @@ public class Campaign {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	@Override
+	public String toString(){
+		return "camp{id = "+this.id+" name = "+this.name +" status = "+ this.status + " }";
+	}
 	
 }

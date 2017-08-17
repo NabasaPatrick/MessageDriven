@@ -7,10 +7,10 @@ import org.apache.kafka.common.serialization.Deserializer;
 import com.example.KafkaMessageDriven.model.Campaign;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class campaignDeserializer implements Deserializer{
+public class campaignDeserializer implements Deserializer<Campaign>{
 
 	@Override
-	public void configure(Map configs, boolean isKey) {
+	public void configure(Map<String, ?> configs, boolean isKey) {
 		// TODO Auto-generated method stub
 		
 	}

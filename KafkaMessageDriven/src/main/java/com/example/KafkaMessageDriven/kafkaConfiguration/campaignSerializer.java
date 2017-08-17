@@ -5,32 +5,36 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
+import org.apache.kafka.common.serialization.Serializer;
+
+import com.example.KafkaMessageDriven.model.Campaign;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 //import org.apache.kafka.common.serialization.Serializer;
 
-public class campaignSerializer implements org.apache.kafka.common.serialization.Serializer{
+public class campaignSerializer implements Serializer<Campaign>{
 
 	@Override
-	public void configure(Map map, boolean b) {
+	public void configure(Map<String, ?> map, boolean b) {
 
     }
 	
 	@Override
-    public byte[] serialize(String s, Object o) {
-
+    public byte[] serialize(String arg0, Campaign arg1) {
+		byte[] retVal = null;
+	    ObjectMapper objectMapper = new ObjectMapper();
        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(o);
-            oos.close();
-            byte[] b = baos.toByteArray();
-            return b;
+            retVal = objectMapper.writeValueAsString(arg1).getBytes();
         } catch (IOException e) {
-            return new byte[0];
+            e.printStackTrace();
         }
+       return retVal;
     }
+	
 	@Override
     public void close() {
 
     }
+
 
 }
