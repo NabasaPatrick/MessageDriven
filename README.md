@@ -8,8 +8,4 @@
 __Thank You__
 
 /*comment from me*/
- Hai patrik bodat...
- Ajari aku bodat
- makasih ya
- wkwkwkwk
- 
+ apa salah ku ya lord..wkwkwk
