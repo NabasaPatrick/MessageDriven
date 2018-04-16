@@ -7,5 +7,4 @@
 
 __Thank You__
 
-/*comment from me*/
- apa salah ku ya lord..wkwkwk
+//i miss thisssss so muccchhhh
